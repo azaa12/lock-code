@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Code Lock</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #e6e6e6;
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        #lockIcon {
+            font-size: 110px;
+            transition: 0.4s ease;
+        }
+
+        .unlocked {
+            color: green;
+            transform: rotate(20deg) scale(1.15);
+        }
+
+        .locked {
+            color: #444;
+            transform: rotate(0deg) scale(1);
+        }
+
+        input {
+            font-size: 24px;
+            padding: 12px;
+            width: 260px;
+            border-radius: 8px;
+            border: 2px solid #888;
+            transition: 0.3s;
+            margin-top: 20px;
+        }
+
+        button {
+            font-size: 20px;
+            padding: 10px 28px;
+            margin-top: 15px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        /* ❌ Буруу код → Сэгсрэх Animation */
+        .shake {
+            animation: shake 0.3s;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-8px);
+            }
+
+            50% {
+                transform: translateX(8px);
+            }
+
+            75% {
+                transform: translateX(-8px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        #result {
+            margin-top: 18px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="lockIcon" class="locked">🔒</div>
+
+    <h2>🔐 5 оронтой код оруулна уу</h2>
+
+    <input id="codeInput" maxlength="5" placeholder="XXXXX">
+    <br>
+    <button onclick="checkCode()">Unlock</button>
+
+    <div id="result"></div>
+
+    <!-- 🔊 ДУУ НЭМСЭН -->
+    <audio id="successSound">
+        <source
+            src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_05fbad620e.mp3?filename=success-1-6297.mp3">
+    </audio>
+
+    <audio id="errorSound">
+        <source src="https://cdn.pixabay.com/download/audio/2021/09/02/audio_955ddcf72e.mp3?filename=error-126627.mp3">
+    </audio>
+
+    <script>
+        // 👉 ЗӨВ КОДЫГ ЭНД СОЛИНО
+        const correctCode = "73952";
+
+        function checkCode() {
+            const userCode = document.getElementById("codeInput").value;
+            const result = document.getElementById("result");
+            const lock = document.getElementById("lockIcon");
+            const inputField = document.getElementById("codeInput");
+
+            const successSound = document.getElementById("successSound");
+            const errorSound = document.getElementById("errorSound");
+
+            // ✔ Зөв код
+            if (userCode === correctCode) {
+                result.style.color = "green";
+                result.innerHTML = "✔ Түгжээ онгойлоо!";
+                lock.classList.remove("locked");
+                lock.classList.add("unlocked");
+                lock.innerHTML = "🔓";
+
+                successSound.play(); // 🔊 дуу гарна
+
+            } else {
+                // ❌ Буруу код
+                result.style.color = "red";
+                result.innerHTML = "✘ Буруу код!";
+                lock.classList.remove("unlocked");
+                lock.classList.add("locked");
+                lock.innerHTML = "🔒";
+
+                inputField.classList.add("shake");
+                errorSound.play(); // 🔊 алдааны дуу
+
+                setTimeout(() => inputField.classList.remove("shake"), 300);
+            }
+        }
+    </script>
+
+</body>
+
+</html>
